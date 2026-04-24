@@ -44,36 +44,68 @@ const countdown = setInterval(() => {
 const intro = document.getElementById("intro");
 const video = document.getElementById("envelopeVideo");
 
+function openPage() {
+  intro.style.transition = "1s ease";
+  intro.style.opacity = "0";
+
+  setTimeout(() => {
+    intro.style.display = "none";
+    window.scrollTo(0, 0);
+    document.body.classList.add("show-page");
+    animateHero();
+    startScrollReveal();
+  }, 700);
+}
+
 intro.addEventListener("click", async () => {
   try {
     await video.play();
-
-    video.onended = () => {
-      // اختفاء intro
-      intro.style.display = "none";
-
-      // تشغيل الموقع (hero يظهر فقط)
-
-      intro.style.transition = "1s ease";
-      intro.style.opacity = "0";
-
-      setTimeout(() => {
-        window.scrollTo(0, 0);
-
-        // تشغيل الموقع
-        document.body.classList.add("show-page");
-
-        // Hero animation
-        animateHero();
-
-        // Scroll reveal
-        startScrollReveal();
-      }, 1000);
-    };
   } catch (e) {
-    console.log("play blocked:", e);
+    openPage();
+    return;
   }
+
+  video.onended = openPage;
+
+  setTimeout(() => {
+    if (!video.ended) openPage();
+  }, 5000);
 });
+
+//#######################
+// const intro = document.getElementById("intro");
+// const video = document.getElementById("envelopeVideo");
+
+// intro.addEventListener("click", async () => {
+//   try {
+//     await video.play();
+
+//     video.onended = () => {
+//       // اختفاء intro
+//       intro.style.display = "none";
+
+//       // تشغيل الموقع (hero يظهر فقط)
+
+//       intro.style.transition = "1s ease";
+//       intro.style.opacity = "0";
+
+//       setTimeout(() => {
+//         window.scrollTo(0, 0);
+
+//         // تشغيل الموقع
+//         document.body.classList.add("show-page");
+
+//         // Hero animation
+//         animateHero();
+
+//         // Scroll reveal
+//         startScrollReveal();
+//       }, 1000);
+//     };
+//   } catch (e) {
+//     console.log("play blocked:", e);
+//   }
+// });
 // const intro = document.getElementById("intro");
 // const video = document.getElementById("envelopeVideo");
 
